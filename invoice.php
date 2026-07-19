@@ -15,7 +15,7 @@ if(!isset($_GET['ids'])) {
 $ids_string = $_GET['ids'];
 $id_array = explode(',', $ids_string);
 
-// Kita ambil detail dari ID pertama sebagai perwakilan informasi (tanggal, jam, lapangan)
+// Ambil detail dari ID pertama sebagai perwakilan informasi (tanggal, jam, lapangan)
 $id_reservasi_pertama = $id_array[0];
 
 $stmt = $conn->prepare("SELECT r.*, l.nama_lapangan, l.jenis_lapangan, l.harga_per_jam 
@@ -30,7 +30,7 @@ if(!$reservasi) {
     exit;
 }
 
-// Jumlah lapangan adalah sebanyak ID yang di-passing
+// Jumlah lapangan
 $jumlah_lapangan = count($id_array);
 
 // Hitung durasi dan total harga

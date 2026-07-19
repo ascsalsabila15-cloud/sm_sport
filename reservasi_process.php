@@ -11,7 +11,7 @@ function redirect_back() {
     exit;
 }
 
-// 1. PROSES BOOKING AWAL
+// Proses Booking Awal
 if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
     $id_pelanggan = $_SESSION['id_pelanggan'];
     $jenis_lapangan  = $_POST['jenis_lapangan'];
@@ -20,7 +20,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
     $jam_mulai    = $_POST['jam_mulai'];
     $jam_selesai  = $_POST['jam_selesai'];
 
-    // Validasi 1: Jam main harus masuk akal (Selesai > Mulai)
+    // Jam main harus masuk akal (Selesai > Mulai)
     if($jam_selesai <= $jam_mulai) {
         echo "<script>alert('Waktu selesai harus lebih besar dari waktu mulai!'); window.history.back();</script>";
         exit;
@@ -36,7 +36,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
     $booked = [];
     foreach ($all_lapangan as $id_lap) {
         // Karena satu reservasi bisa memakai multiple lapangan (melalui jumlah_lapangan = 1 per record, atau jika DB dimodif),
-        // Kita cukup mengecek apakah id_lapangan ini sudah ada di tabel reservasi pada jam tersebut.
+        // Mengecek apakah id_lapangan ini sudah ada di tabel reservasi pada jam tersebut.
         $cek = $conn->prepare("SELECT id_reservasi FROM reservasi 
                                WHERE id_lapangan = ? AND tanggal = ? AND status != 'batal'
                                AND (
@@ -57,7 +57,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
     if (count($available) < $jumlah_lapangan) {
         echo "<script>alert('Gagal! Kapasitas lapangan penuh pada jam tersebut. Sisa tersedia: " . count($available) . " lapangan.'); window.history.back();</script>";
     } else {
-        $available = array_values($available); // Re-index array
+        $available = array_values($available); 
         $inserted_ids = [];
         
         // Simpan setiap lapangan sebagai satu baris reservasi agar terikat ke id_lapangan spesifik
@@ -68,10 +68,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
             $inserted_ids[] = $conn->lastInsertId();
         }
         
-        // Karena di UI kita ingin 1 invoice, kita bisa passing ID reservasi pertama,
-        // namun invoice.php perlu dikondisikan agar menghitung total harga dengan benar.
-        // Untuk saat ini, asumsikan invoice bisa menangani multiple ID (e.g. id=10,11)
-        // Kita gabungkan ID
+        // invoice.php dikondisikan agar menghitung total harga dengan benar.
         $ids_string = implode(',', $inserted_ids);
         
         // Redirect ke halaman invoice untuk bayar
@@ -80,7 +77,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
     }
 }
 
-// 2. PROSES PEMBAYARAN INVOICE
+// Proses Pembayaran Invoice
 if(isset($_POST['action']) && $_POST['action'] == 'bayar_invoice') {
     $ids_string = $_POST['ids_reservasi'];
     $metode_pembayaran = $_POST['metode_pembayaran'];
@@ -113,17 +110,15 @@ if(isset($_POST['action']) && $_POST['action'] == 'bayar_invoice') {
     exit;
 }
 
-// 3. MENGHAPUS / MEMBATALKAN RESERVASI (Pelanggan)
+// Menghapus / Membatalkan Reservasi (Pelanggan)
 if(isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
-    // Kita ubah status jadi batal saja alih-alih delete agar history tetap ada, atau bisa juga delete. 
-    // Mengubah status batal lebih baik untuk sistem pelaporan.
     $hapus = $conn->prepare("UPDATE reservasi SET status = 'batal' WHERE id_reservasi = ? AND id_pelanggan = ?");
     $hapus->execute([$id, $_SESSION['id_pelanggan']]);
     redirect_back();
 }
 
-// 4. ADMIN MEMBATALKAN KARENA KETERLAMBATAN
+// Admin Membatalkan Karena Keterlambatan
 if(isset($_GET['admin_batal'])) {
     if($_SESSION['role'] == 'admin') {
         $id = $_GET['admin_batal'];
@@ -133,7 +128,7 @@ if(isset($_GET['admin_batal'])) {
     }
 }
 
-// 5. ADMIN KONFIRMASI LUNAS
+// Admin Konfirmasi Lunas
 if(isset($_GET['admin_lunas'])) {
     if($_SESSION['role'] == 'admin') {
         $id = $_GET['admin_lunas'];

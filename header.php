@@ -16,11 +16,19 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body { font-family: 'Nunito Sans', sans-serif; background-color: #f8f9fa; }
-        .bg-red { background-color: #dc3545; }
-        .text-red { color: #dc3545; }
+        /* Override Red / Danger Colors to #276F27 */
+        .bg-red, .bg-danger { background-color: #276F27 !important; }
+        .text-red, .text-danger { color: #276F27 !important; }
         .header-sticky { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .nav-link.active { font-weight: bold; border-bottom: 2px solid #dc3545; }
+        .nav-link.active { font-weight: bold; border-bottom: 2px solid #276F27 !important; color: #276F27 !important; }
         .logo-img { height: 50px; max-width: 120px; object-fit: contain; }
+        
+        /* Buttons Override */
+        .btn-danger { background-color: #276F27 !important; border-color: #276F27 !important; }
+        .btn-danger:hover, .btn-danger:focus, .btn-danger:active { background-color: #1e551e !important; border-color: #1e551e !important; }
+        .btn-outline-danger { color: #276F27 !important; border-color: #276F27 !important; }
+        .btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active { background-color: #276F27 !important; color: white !important; }
+        .border-danger { border-color: #276F27 !important; }
     </style>
 </head>
 <body>

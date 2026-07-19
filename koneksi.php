@@ -1,8 +1,7 @@
 <?php
-// Menyimpan detail server database
 $host = "localhost";
-$user = "root"; // Default username XAMPP/Laragon
-$pass = "";     // Default password biasanya kosong
+$user = "root";
+$pass = "";
 $db   = "sm_sport";
 
 try {
