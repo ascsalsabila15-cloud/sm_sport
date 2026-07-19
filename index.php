@@ -13,6 +13,44 @@
     </div>
 </div>
 
+<!-- Mengapa Memilih Kami Section -->
+<div class="row text-center mt-5 mb-5">
+    <div class="col-12 mb-4">
+        <h2 class="fw-bold">Mengapa Memilih SM Sport Center?</h2>
+        <div class="mx-auto bg-red" style="width: 60px; height: 3px;"></div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded shadow-sm h-100 border-top border-danger border-4">
+            <div class="text-danger mb-3">
+                <i class="bi bi-star-fill" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4 class="fw-bold">Fasilitas Premium</h4>
+            <p class="text-muted">Lapangan berstandar internasional dengan material berkualitas tinggi untuk kenyamanan dan keamanan saat berolahraga.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded shadow-sm h-100 border-top border-danger border-4">
+            <div class="text-danger mb-3">
+                <i class="bi bi-cash-coin" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4 class="fw-bold">Harga Terjangkau</h4>
+            <p class="text-muted">Nikmati fasilitas olahraga terbaik dengan harga yang bersahabat dan sistem pemesanan online yang sangat praktis.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="p-4 bg-white rounded shadow-sm h-100 border-top border-danger border-4">
+            <div class="text-danger mb-3">
+                <i class="bi bi-geo-alt-fill" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4 class="fw-bold">Lokasi Strategis</h4>
+            <p class="text-muted">Terletak di area yang mudah dijangkau dengan fasilitas pendukung lengkap serta area parkir yang luas dan aman.</p>
+        </div>
+    </div>
+</div>
+
 <div class="row text-center mt-5">
     <div class="col-12 mb-4">
         <h2 class="fw-bold">Fasilitas Olahraga Kami</h2>
