@@ -4,10 +4,7 @@
     <div class="col-md-7">
         <h1 class="display-4 fw-bold text-dark">Selamat Datang di<br><span class="text-red">SM Sport Center</span></h1>
         <p class="lead text-secondary mt-3">Pusat olahraga modern dengan fasilitas lapangan futsal dan badminton berkualitas tinggi. Sistem reservasi online kami memudahkan Anda untuk mengecek jadwal dan memesan lapangan kapan saja.</p>
-        <?php if(!isset($_SESSION['nama'])): ?>
-            <a href="register.php" class="btn btn-danger btn-lg mt-3 shadow">Daftar Sekarang</a>
-            <a href="login.php" class="btn btn-outline-danger btn-lg mt-3 ms-2">Login</a>
-        <?php else: ?>
+        <?php if(isset($_SESSION['nama'])): ?>
             <a href="reservasi.php" class="btn btn-danger btn-lg mt-3 shadow">Pesan Lapangan</a>
         <?php endif; ?>
     </div>
