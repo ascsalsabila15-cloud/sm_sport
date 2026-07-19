@@ -11,7 +11,7 @@ $stmtLap = $conn->query("SELECT jenis_lapangan, MIN(harga_per_jam) as harga_per_
 $lapangan = $stmtLap->fetchAll();
 
 $id_pelanggan = $_SESSION['id_pelanggan'];
-// For history, we can still join with `lapangan` if `id_lapangan` is stored.
+// Untuk riwayat, kita masih bisa bergabung dengan `lapangan` jika `id_lapangan` tersimpan
 $stmtRes = $conn->prepare("SELECT r.*, p.nama, l.nama_lapangan, l.harga_per_jam 
                         FROM reservasi r 
                         JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan 
