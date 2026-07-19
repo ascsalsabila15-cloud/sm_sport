@@ -1,35 +1,51 @@
 <?php
 session_start();
+require 'koneksi.php';
+
 if(!isset($_SESSION['id_pelanggan']) || $_SESSION['role'] != 'admin') {
     header("Location: login.php");
     exit;
 }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard Admin</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="admin-theme">
-    <div class="sidebar">
-        <h2 style="text-align:center; color:white; margin-bottom:30px;">Admin Panel</h2>
-        <a href="dashboard_admin.php" style="color:#adb5bd; display:block; margin-bottom:15px; font-weight:bold;">Dashboard</a>
-        <a href="reservasi_admin.php" style="color:white; display:block; margin-bottom:15px;">Semua Reservasi</a>
 
-        <a href="logout.php" class="btn btn-danger" style="display:block; margin-top:50px;">Logout</a>
+// Hitung total reservasi pending
+$stmtPending = $conn->query("SELECT COUNT(*) as total FROM reservasi WHERE status='pending'");
+$pending = $stmtPending->fetch()['total'];
+
+// Hitung total reservasi lunas hari ini
+$stmtLunas = $conn->query("SELECT COUNT(*) as total FROM reservasi WHERE status='lunas' AND tanggal = CURDATE()");
+$lunas_hari_ini = $stmtLunas->fetch()['total'];
+
+include 'header.php';
+?>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold">Dashboard Admin</h2>
+        <p class="text-muted">Selamat datang, <?= htmlspecialchars($_SESSION['nama']) ?>.</p>
     </div>
-    <div class="main-content admin-main">
-        <div class="navbar-admin">
-            <h2>Selamat datang, Admin <?= htmlspecialchars($_SESSION['nama']) ?>!</h2>
-            <!-- #belajar -->
-        </div>
-        <div class="content">
-            <h3>Monitoring Sistem</h3>
-            <p>Gunakan menu sidebar untuk mengontrol pemesanan lapangan futsal dan badminton.</p>
-            <br>
-            <a href="reservasi_admin.php" class="btn btn-primary">Lihat Daftar Reservasi Masuk</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card bg-warning text-dark shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-hourglass-split"></i> Reservasi Pending</h5>
+                <h2 class="display-4 fw-bold"><?= $pending ?></h2>
+                <p class="card-text">Menunggu konfirmasi pembayaran</p>
+                <a href="reservasi_admin.php" class="btn btn-dark btn-sm">Lihat Detail &rarr;</a>
+            </div>
         </div>
     </div>
-</body>
-</html>
+    <div class="col-md-6 mb-4">
+        <div class="card bg-success text-white shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-calendar-check"></i> Reservasi Selesai (Hari Ini)</h5>
+                <h2 class="display-4 fw-bold"><?= $lunas_hari_ini ?></h2>
+                <p class="card-text">Pelanggan yang sudah lunas dan main hari ini</p>
+                <a href="reservasi_admin.php" class="btn btn-light btn-sm text-success">Lihat Semua &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php include 'footer.php'; ?>
