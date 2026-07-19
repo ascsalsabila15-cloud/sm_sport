@@ -12,11 +12,27 @@ $lapangan = $stmtLap->fetchAll();
 
 $id_pelanggan = $_SESSION['id_pelanggan'];
 // Untuk riwayat, kita masih bisa bergabung dengan `lapangan` jika `id_lapangan` tersimpan
-$stmtRes = $conn->prepare("SELECT r.*, p.nama, l.nama_lapangan, l.harga_per_jam 
+$stmtRes = $conn->prepare("SELECT 
+                            GROUP_CONCAT(r.id_reservasi) as id_reservasi_group,
+                            l.jenis_lapangan as nama_lapangan, 
+                            SUM(r.jumlah_lapangan) as jumlah_lapangan,
+                            r.tanggal, 
+                            r.jam_mulai, 
+                            r.jam_selesai, 
+                            r.metode_pembayaran, 
+                            MAX(r.bukti_transfer) as bukti_transfer, 
+                            r.status
                         FROM reservasi r 
                         JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan 
                         LEFT JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
                         WHERE r.id_pelanggan = ? 
+                        GROUP BY 
+                            l.jenis_lapangan, 
+                            r.tanggal, 
+                            r.jam_mulai, 
+                            r.jam_selesai, 
+                            r.metode_pembayaran, 
+                            r.status
                         ORDER BY r.tanggal DESC, r.jam_mulai ASC");
 $stmtRes->execute([$id_pelanggan]);
 $reservasi = $stmtRes->fetchAll();
@@ -60,11 +76,11 @@ include 'header.php';
                     <div class="row mb-4">
                         <div class="col">
                             <label class="form-label text-muted">Jam Mulai</label>
-                            <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="21:00">
+                            <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="23:00">
                         </div>
                         <div class="col">
                             <label class="form-label text-muted">Jam Selesai</label>
-                            <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="21:00">
+                            <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="23:00">
                         </div>
                     </div>
                     
@@ -129,8 +145,8 @@ include 'header.php';
                             </td>
                             <td>
                                 <?php if($row['status'] == 'pending'): ?>
-                                    <a href="invoice.php?ids=<?= $row['id_reservasi'] ?>" class="btn btn-sm btn-info text-white mb-1"><i class="bi bi-receipt"></i> Bayar</a>
-                                    <a href="reservasi_process.php?hapus=<?= $row['id_reservasi'] ?>" onclick="return confirm('Yakin ingin membatalkan?')" class="btn btn-sm btn-outline-danger mb-1"><i class="bi bi-x-circle"></i> Batal</a>
+                                    <a href="invoice.php?ids=<?= $row['id_reservasi_group'] ?>" class="btn btn-sm btn-info text-white mb-1"><i class="bi bi-receipt"></i> Bayar</a>
+                                    <a href="reservasi_process.php?batal_banyak=<?= $row['id_reservasi_group'] ?>" onclick="return confirm('Yakin ingin membatalkan?')" class="btn btn-sm btn-outline-danger mb-1"><i class="bi bi-x-circle"></i> Batal</a>
                                 <?php endif; ?>
                             </td>
                         </tr>

@@ -91,7 +91,7 @@ include 'header.php';
                             <small><i class="bi bi-info-circle"></i> Silakan transfer ke <strong>BCA 1234567890 a.n SM Sport Center</strong> sejumlah <strong>Rp <?= number_format($total_harga, 0, ',', '.') ?></strong>.</small>
                         </div>
                         <label class="form-label text-muted">Unggah Bukti Transfer (Gambar)</label>
-                        <input type="file" name="bukti_transfer" class="form-control" accept="image/*">
+                        <input type="file" name="bukti_transfer" id="bukti_transfer_input" class="form-control" accept="image/*" <?= $reservasi['metode_pembayaran'] == 'transfer' ? 'required' : '' ?>>
                     </div>
 
                     <button type="submit" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-check-circle"></i> Konfirmasi Pembayaran</button>
@@ -106,10 +106,13 @@ include 'header.php';
 function toggleBuktiTransfer() {
     var metode = document.getElementById('metode_pembayaran').value;
     var divBukti = document.getElementById('bukti_transfer_div');
+    var inputBukti = document.getElementById('bukti_transfer_input');
     if (metode === 'transfer') {
         divBukti.style.display = 'block';
+        inputBukti.required = true;
     } else {
         divBukti.style.display = 'none';
+        inputBukti.required = false;
     }
 }
 </script>

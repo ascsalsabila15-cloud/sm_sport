@@ -131,12 +131,16 @@ if(isset($_GET['batal_banyak'])) {
     redirect_back();
 }
 
-// Admin Membatalkan Karena Keterlambatan
+// Admin Membatalkan Karena Keterlambatan / Manual
 if(isset($_GET['admin_batal'])) {
     if($_SESSION['role'] == 'admin') {
-        $id = $_GET['admin_batal'];
-        $hapus = $conn->prepare("UPDATE reservasi SET status = 'batal' WHERE id_reservasi = ?");
-        $hapus->execute([$id]);
+        $ids_string = $_GET['admin_batal'];
+        if (preg_match('/^[0-9,]+$/', $ids_string)) {
+            $ids = explode(',', $ids_string);
+            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+            $hapus = $conn->prepare("UPDATE reservasi SET status = 'batal' WHERE id_reservasi IN ($placeholders)");
+            $hapus->execute($ids);
+        }
         echo "<script>alert('Booking berhasil dibatalkan oleh Admin.'); window.location='reservasi_admin.php';</script>";
     }
 }
@@ -144,9 +148,13 @@ if(isset($_GET['admin_batal'])) {
 // Admin Konfirmasi Lunas
 if(isset($_GET['admin_lunas'])) {
     if($_SESSION['role'] == 'admin') {
-        $id = $_GET['admin_lunas'];
-        $hapus = $conn->prepare("UPDATE reservasi SET status = 'lunas' WHERE id_reservasi = ?");
-        $hapus->execute([$id]);
+        $ids_string = $_GET['admin_lunas'];
+        if (preg_match('/^[0-9,]+$/', $ids_string)) {
+            $ids = explode(',', $ids_string);
+            $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+            $lunas = $conn->prepare("UPDATE reservasi SET status = 'lunas' WHERE id_reservasi IN ($placeholders)");
+            $lunas->execute($ids);
+        }
         echo "<script>alert('Booking berhasil di-set Lunas.'); window.location='reservasi_admin.php';</script>";
     }
 }

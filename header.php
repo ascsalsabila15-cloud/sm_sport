@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="container d-flex flex-nowrap justify-content-between align-items-center h-100 py-2">
                 <ul class="navbar-nav flex-row flex-wrap">
                     <li class="nav-item col-6 col-md-auto mx-2 text-center text-white" style="font-size:14px;">
-                        <i class="bi bi-clock"></i> Jam Operasional: 06:00 - 21:00
+                        <i class="bi bi-clock"></i> Jam Operasional: 06:00 - 23:00
                     </li>
                     <li class="nav-item col-6 col-md-auto mx-2 text-center text-white" style="font-size:14px;">
                         <i class="bi bi-telephone"></i> 081210214016

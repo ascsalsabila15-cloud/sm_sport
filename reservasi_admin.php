@@ -7,10 +7,30 @@ if(!isset($_SESSION['id_pelanggan']) || $_SESSION['role'] != 'admin') {
     exit;
 }
 
-$stmtRes = $conn->query("SELECT r.*, p.nama, p.no_hp, l.nama_lapangan 
+$stmtRes = $conn->query("SELECT 
+                            GROUP_CONCAT(r.id_reservasi) as id_reservasi_group,
+                            l.jenis_lapangan as nama_lapangan, 
+                            SUM(r.jumlah_lapangan) as jumlah_lapangan,
+                            r.tanggal, 
+                            r.jam_mulai, 
+                            r.jam_selesai, 
+                            r.metode_pembayaran, 
+                            MAX(r.bukti_transfer) as bukti_transfer, 
+                            r.status,
+                            p.nama,
+                            p.no_hp
                         FROM reservasi r 
                         JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan 
                         JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
+                        GROUP BY 
+                            l.jenis_lapangan, 
+                            r.tanggal, 
+                            r.jam_mulai, 
+                            r.jam_selesai, 
+                            r.metode_pembayaran, 
+                            r.status,
+                            p.nama,
+                            p.no_hp
                         ORDER BY r.tanggal DESC, r.jam_mulai ASC");
 $reservasi = $stmtRes->fetchAll();
 
@@ -47,7 +67,7 @@ include 'header.php';
                     $telat_30_menit = ($sekarang > ($waktu_main + 1800)); // 1800 detik = 30 menit
                 ?>
                 <tr>
-                    <td>#<?= $row['id_reservasi'] ?></td>
+                    <td>#<?= $row['id_reservasi_group'] ?></td>
                     <td>
                         <strong><?= htmlspecialchars($row['nama']) ?></strong><br>
                         <small class="text-muted"><i class="bi bi-whatsapp"></i> <?= htmlspecialchars($row['no_hp']) ?></small>
@@ -79,12 +99,12 @@ include 'header.php';
                     </td>
                     <td>
                         <?php if($row['status'] == 'pending'): ?>
-                            <a href="reservasi_process.php?admin_lunas=<?= $row['id_reservasi'] ?>" class="btn btn-sm btn-success mb-1 w-100" onclick="return confirm('Konfirmasi Lunas?')"><i class="bi bi-check-lg"></i> Lunas</a>
+                            <a href="reservasi_process.php?admin_lunas=<?= $row['id_reservasi_group'] ?>" class="btn btn-sm btn-success mb-1 w-100" onclick="return confirm('Konfirmasi Lunas?')"><i class="bi bi-check-lg"></i> Lunas</a>
                             
                             <?php if($row['metode_pembayaran'] == 'cash' && $telat_30_menit): ?>
-                                <a href="reservasi_process.php?admin_batal=<?= $row['id_reservasi'] ?>" class="btn btn-sm btn-danger mb-1 w-100" onclick="return confirm('Pelanggan telat 30 menit. Yakin ingin membatalkan booking ini?')"><i class="bi bi-x-circle"></i> Batal (No-Show)</a>
+                                <a href="reservasi_process.php?admin_batal=<?= $row['id_reservasi_group'] ?>" class="btn btn-sm btn-danger mb-1 w-100" onclick="return confirm('Pelanggan telat 30 menit. Yakin ingin membatalkan booking ini?')"><i class="bi bi-x-circle"></i> Batal (No-Show)</a>
                             <?php else: ?>
-                                <a href="reservasi_process.php?admin_batal=<?= $row['id_reservasi'] ?>" class="btn btn-sm btn-outline-danger mb-1 w-100" onclick="return confirm('Yakin ingin membatalkan reservasi ini?')"><i class="bi bi-trash"></i> Batalkan</a>
+                                <a href="reservasi_process.php?admin_batal=<?= $row['id_reservasi_group'] ?>" class="btn btn-sm btn-outline-danger mb-1 w-100" onclick="return confirm('Yakin ingin membatalkan reservasi ini?')"><i class="bi bi-trash"></i> Batalkan</a>
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>
