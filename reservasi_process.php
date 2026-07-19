@@ -118,6 +118,19 @@ if(isset($_GET['hapus'])) {
     redirect_back();
 }
 
+// Batal dari Invoice (Bisa banyak ID)
+if(isset($_GET['batal_banyak'])) {
+    $ids_string = $_GET['batal_banyak'];
+    if (preg_match('/^[0-9,]+$/', $ids_string)) {
+        $ids = explode(',', $ids_string);
+        $placeholders = str_repeat('?,', count($ids) - 1) . '?';
+        $params = array_merge($ids, [$_SESSION['id_pelanggan']]);
+        $hapus = $conn->prepare("UPDATE reservasi SET status = 'batal' WHERE id_reservasi IN ($placeholders) AND id_pelanggan = ?");
+        $hapus->execute($params);
+    }
+    redirect_back();
+}
+
 // Admin Membatalkan Karena Keterlambatan
 if(isset($_GET['admin_batal'])) {
     if($_SESSION['role'] == 'admin') {

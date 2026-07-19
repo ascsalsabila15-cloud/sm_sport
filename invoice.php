@@ -95,7 +95,7 @@ include 'header.php';
                     </div>
 
                     <button type="submit" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-check-circle"></i> Konfirmasi Pembayaran</button>
-                    <a href="reservasi_pelanggan.php" class="btn btn-outline-secondary w-100 fw-bold py-2 mt-2">Batal & Kembali</a>
+                    <a href="reservasi_process.php?batal_banyak=<?= htmlspecialchars($ids_string) ?>" onclick="return confirm('Yakin ingin membatalkan pesanan ini?')" class="btn btn-outline-secondary w-100 fw-bold py-2 mt-2">Batal & Kembali</a>
                 </form>
             </div>
         </div>
