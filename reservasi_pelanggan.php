@@ -92,7 +92,7 @@ include 'header.php';
 
     <div class="col-md-8">
         <div class="alert alert-warning mb-4" role="alert">
-            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Peringatan!</strong> Keterlambatan datang selama 15 menit jika tidak datang wajib menerima konsekuensi booking dibatalkan.
+            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Peringatan!</strong> Untuk Pembayaran Cash : Keterlambatan datang maximal 15 menit dari jadwal, jika tidak datang wajib menerima konsekuensi booking dibatalkan oleh admin.
         </div>
         
         <div class="card shadow-sm border-0">

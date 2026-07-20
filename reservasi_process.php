@@ -26,6 +26,13 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
         exit;
     }
 
+    // Validasi waktu pesanan untuk hari ini (jam tidak boleh kurang dari waktu sekarang)
+    date_default_timezone_set('Asia/Jakarta');
+    if ($tanggal == date('Y-m-d') && $jam_mulai < date('H:i')) {
+        echo "<script>alert('Jam pesanan sudah lewat. Silakan pilih jam yang tersedia!'); window.history.back();</script>";
+        exit;
+    }
+
     // Ambil daftar id_lapangan yang sesuai dengan jenis yang dipilih
     $stmtLap = $conn->prepare("SELECT id_lapangan FROM lapangan WHERE jenis_lapangan = ?");
     $stmtLap->execute([$jenis_lapangan]);
