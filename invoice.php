@@ -15,7 +15,7 @@ if(!isset($_GET['ids'])) {
 $ids_string = $_GET['ids'];
 $id_array = explode(',', $ids_string);
 
-// Ambil detail dari ID pertama sebagai perwakilan informasi (tanggal, jam, lapangan)
+// Mengambil detail reservasi berdasarkan ID pertama sebagai acuan data
 $id_reservasi_pertama = $id_array[0];
 
 $stmt = $conn->prepare("SELECT r.*, l.nama_lapangan, l.jenis_lapangan, l.harga_per_jam 
@@ -30,10 +30,10 @@ if(!$reservasi) {
     exit;
 }
 
-// Jumlah lapangan
+// Menghitung jumlah lapangan yang dipesan dalam satu sesi
 $jumlah_lapangan = count($id_array);
 
-// Hitung durasi dan total harga
+// Menghitung durasi bermain (dalam jam) dan total biaya keseluruhan
 $jam_mulai = strtotime($reservasi['jam_mulai']);
 $jam_selesai = strtotime($reservasi['jam_selesai']);
 $durasi_jam = ($jam_selesai - $jam_mulai) / 3600;
@@ -45,7 +45,7 @@ include 'header.php';
 <div class="row justify-content-center">
     <div class="col-md-6 mb-4">
         <div class="card shadow border-0">
-            <div class="card-header bg-danger text-white text-center fw-bold py-3">
+            <div class="card-header bg-utama text-white text-center fw-bold py-3">
                 <i class="bi bi-receipt"></i> INVOICE PEMBAYARAN
             </div>
             <div class="card-body p-4">
@@ -69,7 +69,7 @@ include 'header.php';
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
                         <span class="fw-bold text-dark">TOTAL TAGIHAN</span>
-                        <span class="fw-bold text-danger fs-5">Rp <?= number_format($total_harga, 0, ',', '.') ?></span>
+                        <span class="fw-bold text-utama fs-5">Rp <?= number_format($total_harga, 0, ',', '.') ?></span>
                     </li>
                 </ul>
 

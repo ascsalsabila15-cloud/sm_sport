@@ -16,25 +16,24 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body { font-family: 'Nunito Sans', sans-serif; background-color: #f8f9fa; }
-        /* Override Red / Danger Colors to #276F27 */
-        .bg-red, .bg-danger { background-color: #276F27 !important; }
-        .text-red, .text-danger { color: #276F27 !important; }
+        .bg-utama { background-color: #276F27 !important; }
+        .text-utama { color: #276F27 !important; }
         .header-sticky { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .nav-link.active { font-weight: bold; border-bottom: 2px solid #276F27 !important; color: #276F27 !important; }
         .logo-img { height: 50px; max-width: 120px; object-fit: contain; }
         
-        /* Buttons Override */
-        .btn-danger { background-color: #276F27 !important; border-color: #276F27 !important; }
-        .btn-danger:hover, .btn-danger:focus, .btn-danger:active { background-color: #1e551e !important; border-color: #1e551e !important; }
-        .btn-outline-danger { color: #276F27 !important; border-color: #276F27 !important; }
-        .btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active { background-color: #276F27 !important; color: white !important; }
-        .border-danger { border-color: #276F27 !important; }
+        /* Penggantian Tombol */
+        .btn-utama { background-color: #276F27 !important; border-color: #276F27 !important; color: white !important; }
+        .btn-utama:hover, .btn-utama:focus, .btn-utama:active { background-color: #1e551e !important; border-color: #1e551e !important; color: white !important; }
+        .btn-outline-utama { color: #276F27 !important; border-color: #276F27 !important; }
+        .btn-outline-utama:hover, .btn-outline-utama:focus, .btn-outline-utama:active { background-color: #276F27 !important; color: white !important; }
+        .border-utama { border-color: #276F27 !important; }
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
+    <!-- Bar Teratas -->
     <header class="container-fluid p-0">
-        <div class="bg-red d-none d-sm-block" style="height: 40px;">
+        <div class="bg-utama d-none d-sm-block" style="height: 40px;">
             <div class="container d-flex flex-nowrap justify-content-between align-items-center h-100 py-2">
                 <ul class="navbar-nav flex-row flex-wrap">
                     <li class="nav-item col-6 col-md-auto mx-2 text-center text-white" style="font-size:14px;">
@@ -51,7 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </header>
 
-    <!-- Main Navbar -->
+    <!-- Navigasi -->
     <div class="container-fluid p-0 sticky-top bg-white header-sticky">
         <nav class="navbar navbar-expand-lg navbar-light container py-0" style="height: 70px;">
             <a class="navbar-brand m-0" href="index.php">
@@ -64,23 +63,32 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="collapse navbar-collapse ms-4" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-red fw-bold text-uppercase" href="index.php">
+                        <a class="nav-link text-utama fw-bold text-uppercase" href="index.php">
                             <i class="bi bi-trophy"></i> Olahraga
                         </a>
                     </li>
                     <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link text-red fw-bold" href="dashboard_admin.php">Dashboard Admin</a>
+                            <a class="nav-link text-utama fw-bold" href="dashboard.php">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-red fw-bold" href="reservasi_admin.php">Kelola Reservasi</a>
+                            <a class="nav-link text-utama fw-bold" href="reservasi.php">Reservasi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-utama fw-bold" href="lapangan.php">Lapangan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-utama fw-bold" href="pelanggan.php">Pelanggan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-utama fw-bold" href="laporan.php">Laporan</a>
                         </li>
                     <?php elseif(isset($_SESSION['role']) && $_SESSION['role'] == 'pelanggan'): ?>
                         <li class="nav-item">
-                            <a class="nav-link text-red fw-bold" href="dashboard_pelanggan.php">Dashboard Saya</a>
+                            <a class="nav-link text-utama fw-bold" href="dashboard.php">Dashboard Saya</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-red fw-bold" href="reservasi_pelanggan.php">Riwayat Booking</a>
+                            <a class="nav-link text-utama fw-bold" href="reservasi.php">Riwayat Booking</a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -88,15 +96,15 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="d-flex align-items-center">
                     <?php if(isset($_SESSION['nama'])): ?>
                         <span class="me-3 fw-bold text-dark">Halo, <?= htmlspecialchars($_SESSION['nama']) ?></span>
-                        <a href="logout.php" class="btn btn-sm btn-outline-danger shadow-none">Keluar</a>
+                        <a href="login.php?action=logout" class="btn btn-sm btn-outline-utama shadow-none">Keluar</a>
                     <?php else: ?>
-                        <a href="login.php" class="btn btn-sm btn-outline-danger mx-2 shadow-none">Masuk</a>
-                        <a href="register.php" class="btn btn-sm btn-danger shadow-none">Daftar</a>
+                        <a href="login.php" class="btn btn-sm btn-outline-utama mx-2 shadow-none">Masuk</a>
+                        <a href="register.php" class="btn btn-sm btn-utama shadow-none">Daftar</a>
                     <?php endif; ?>
                 </div>
             </div>
         </nav>
     </div>
     
-    <!-- Main Content Wrapper -->
+    <!-- Konten Utama -->
     <div class="container my-4 min-vh-100">

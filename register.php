@@ -1,10 +1,11 @@
 <?php include 'header.php'; ?>
 
+<!-- Tampilan Form Registrasi Pelanggan -->
 <div class="row justify-content-center mt-5 mb-5">
     <div class="col-md-6">
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h3 class="text-center text-red fw-bold mb-4">Pendaftaran Akun</h3>
+                <h3 class="text-center text-utama fw-bold mb-4">Pendaftaran Akun</h3>
                 
                 <form action="register_process.php" method="POST">
                     <div class="mb-3">
@@ -27,12 +28,12 @@
                         <input type="password" name="password" class="form-control" placeholder="Buat password" required>
                     </div>
                     
-                    <button type="submit" name="register" class="btn btn-danger w-100 fw-bold py-2">Daftar Sekarang</button>
+                    <button type="submit" name="register" class="btn btn-utama w-100 fw-bold py-2">Daftar Sekarang</button>
                 </form>
                 
                 <div class="text-center mt-4">
                     <p class="text-muted mb-2">Sudah punya akun?</p>
-                    <a href="login.php" class="btn btn-outline-danger w-100">Masuk di sini</a>
+                    <a href="login.php" class="btn btn-outline-utama w-100">Masuk di sini</a>
                 </div>
             </div>
         </div>

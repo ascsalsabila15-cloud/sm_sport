@@ -4,14 +4,12 @@ $user = "root";
 $pass = "";
 $db   = "sm_sport";
 
+// Konfigurasi PDO untuk keamanan dan penanganan error
 try {
-    // Mencoba membuka koneksi ke MySQL menggunakan PDO
-    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     
-    // Mengatur agar error di database ditampilkan sebagai Exception
+    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
-    // Jika gagal connect, program berhenti dan pesan error ditampilkan
     die("Koneksi database gagal: " . $e->getMessage());
 }
 ?>
