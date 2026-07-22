@@ -30,10 +30,16 @@ if(isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
     
     if($id != $_SESSION['id_pelanggan']) {
-        $stmt = $conn->prepare("DELETE FROM pelanggan WHERE id_pelanggan=?");
-        $stmt->execute([$id]);
+        try {
+            $stmt = $conn->prepare("DELETE FROM pelanggan WHERE id_pelanggan=?");
+            $stmt->execute([$id]);
+            echo "<script>alert('Berhasil dihapus!'); window.location='pelanggan.php';</script>";
+        } catch(PDOException $e) {
+            echo "<script>alert('Gagal! Pelanggan ini tidak bisa dihapus karena sudah memiliki riwayat transaksi/reservasi.'); window.location='pelanggan.php';</script>";
+        }
+    } else {
+        echo "<script>alert('Gagal! Anda tidak bisa menghapus akun Anda sendiri saat sedang login.'); window.location='pelanggan.php';</script>";
     }
-    header("Location: pelanggan.php");
     exit;
 }
 
