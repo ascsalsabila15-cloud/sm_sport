@@ -28,11 +28,21 @@ if (session_status() === PHP_SESSION_NONE) {
         .btn-outline-utama { color: #276F27 !important; border-color: #276F27 !important; }
         .btn-outline-utama:hover, .btn-outline-utama:focus, .btn-outline-utama:active { background-color: #276F27 !important; color: white !important; }
         .border-utama { border-color: #276F27 !important; }
+        /* Print Styles */
+        @media print {
+            body { background-color: white !important; }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .card { break-inside: avoid; border: 1px solid #ddd !important; }
+            .container { max-width: 100% !important; padding: 0 !important; }
+        }
     </style>
 </head>
 <body>
     <!-- Bar Teratas -->
-    <header class="container-fluid p-0">
+    <header class="container-fluid p-0 d-print-none">
         <div class="bg-utama d-none d-sm-block" style="height: 40px;">
             <div class="container d-flex flex-nowrap justify-content-between align-items-center h-100 py-2">
                 <ul class="navbar-nav flex-row flex-wrap">
@@ -51,7 +61,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </header>
 
     <!-- Navigasi -->
-    <div class="container-fluid p-0 sticky-top bg-white header-sticky">
+    <div class="container-fluid p-0 sticky-top bg-white header-sticky d-print-none">
         <nav class="navbar navbar-expand-lg navbar-light container py-0" style="height: 70px;">
             <a class="navbar-brand m-0" href="index.php">
                 <img src="images/logo.png" alt="sm-sport-logo" class="logo-img">

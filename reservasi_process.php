@@ -3,11 +3,7 @@ session_start();
 require 'koneksi.php';
 
 function redirect_back() {
-    if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-        header("Location: reservasi_admin.php");
-    } else {
-        header("Location: reservasi_pelanggan.php");
-    }
+    header("Location: reservasi.php");
     exit;
 }
 
@@ -101,7 +97,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'bayar_invoice') {
     $update->execute($params);
     
     echo "<script>alert('Berhasil! Pembayaran berhasil diproses.');</script>";
-    echo "<script>window.location='reservasi_pelanggan.php';</script>";
+    echo "<script>window.location='reservasi.php';</script>";
     exit;
 }
 
@@ -133,7 +129,7 @@ if(isset($_GET['admin_batal'])) {
             $hapus = $conn->prepare("UPDATE reservasi SET status = 'batal' WHERE id_reservasi IN ($placeholders)");
             $hapus->execute($ids);
         }
-        echo "<script>alert('Booking berhasil dibatalkan oleh Admin.'); window.location='reservasi_admin.php';</script>";
+        echo "<script>alert('Booking berhasil dibatalkan oleh Admin.'); window.location='reservasi.php';</script>";
     }
 }
 
@@ -146,7 +142,7 @@ if(isset($_GET['admin_lunas'])) {
             $lunas = $conn->prepare("UPDATE reservasi SET status = 'lunas' WHERE id_reservasi IN ($placeholders)");
             $lunas->execute($ids);
         }
-        echo "<script>alert('Booking berhasil di-set Lunas.'); window.location='reservasi_admin.php';</script>";
+        echo "<script>alert('Booking berhasil di-set Lunas.'); window.location='reservasi.php';</script>";
     }
 }
 ?>

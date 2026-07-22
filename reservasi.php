@@ -209,9 +209,16 @@ include 'header.php';
                             <?php elseif($row['status'] == 'lunas'): 
                                 $wa_number = preg_replace('/[^0-9]/', '', $row['no_hp']);
                                 if(substr($wa_number, 0, 1) == '0') $wa_number = '62' . substr($wa_number, 1);
-                                $wa_msg = urlencode("Halo " . $row['nama'] . ", reservasi Anda di SM Sport Center untuk " . $row['nama_lapangan'] . " pada " . date('d M Y', strtotime($row['tanggal'])) . " jam " . substr($row['jam_mulai'],0,5) . " sudah dikonfirmasi. Harap datang tepat waktu ya. Terima kasih!");
+                                $wa_msg = urlencode("Halo " . $row['nama'] . ", reservasi Anda di SM Sport Center untuk " . $row['nama_lapangan'] . " pada " . date('d M Y', strtotime($row['tanggal'])) . " jam " . substr($row['jam_mulai'],0,5) . " sudah dikonfirmasi LUNAS. Harap datang tepat waktu ya. Terima kasih!");
                             ?>
-                                <a href="https://wa.me/<?= $wa_number ?>?text=<?= $wa_msg ?>" target="_blank" class="btn btn-sm btn-success w-100"><i class="bi bi-whatsapp"></i> Konfirmasi WA</a>
+                                <a href="https://wa.me/<?= $wa_number ?>?text=<?= $wa_msg ?>" target="_blank" class="btn btn-sm btn-success w-100"><i class="bi bi-whatsapp"></i> Konfirmasi Lunas</a>
+                            
+                            <?php elseif($row['status'] == 'batal'): 
+                                $wa_number = preg_replace('/[^0-9]/', '', $row['no_hp']);
+                                if(substr($wa_number, 0, 1) == '0') $wa_number = '62' . substr($wa_number, 1);
+                                $wa_msg = urlencode("Mohon maaf " . $row['nama'] . ", reservasi Anda di SM Sport Center untuk " . $row['nama_lapangan'] . " pada " . date('d M Y', strtotime($row['tanggal'])) . " jam " . substr($row['jam_mulai'],0,5) . " telah DIBATALKAN (karena telat / permintaan). Silakan lakukan reservasi ulang jika berkenan. Terima kasih.");
+                            ?>
+                                <a href="https://wa.me/<?= $wa_number ?>?text=<?= $wa_msg ?>" target="_blank" class="btn btn-sm btn-danger w-100"><i class="bi bi-whatsapp"></i> Konfirmasi Batal</a>
                             <?php endif; ?>
                         </td>
                     </tr>

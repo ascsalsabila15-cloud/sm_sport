@@ -37,6 +37,7 @@ $jumlah_lapangan = count($id_array);
 $jam_mulai = strtotime($reservasi['jam_mulai']);
 $jam_selesai = strtotime($reservasi['jam_selesai']);
 $durasi_jam = ($jam_selesai - $jam_mulai) / 3600;
+$durasi_tampil = round($durasi_jam, 2);
 $total_harga = $durasi_jam * $reservasi['harga_per_jam'] * $jumlah_lapangan;
 
 include 'header.php';
@@ -65,7 +66,7 @@ include 'header.php';
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span>Waktu</span>
-                        <span class="fw-bold"><?= substr($reservasi['jam_mulai'],0,5) ?> - <?= substr($reservasi['jam_selesai'],0,5) ?> (<?= $durasi_jam ?> Jam)</span>
+                        <span class="fw-bold"><?= substr($reservasi['jam_mulai'],0,5) ?> - <?= substr($reservasi['jam_selesai'],0,5) ?> (<?= $durasi_tampil ?> Jam)</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
                         <span class="fw-bold text-dark">TOTAL TAGIHAN</span>

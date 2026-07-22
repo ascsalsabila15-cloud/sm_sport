@@ -9,7 +9,7 @@ if(!isset($_SESSION['id_pelanggan']) || $_SESSION['role'] != 'admin') {
 
 // Mengambil total pendapatan bulan ini (hanya yang statusnya lunas)
 $stmtBulanIni = $conn->query("
-    SELECT IFNULL(SUM(l.harga_per_jam * r.jumlah_lapangan), 0) as total 
+    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan), 0) as total 
     FROM reservasi r 
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
     WHERE r.status = 'lunas' 
@@ -19,7 +19,7 @@ $pendapatan_bulan_ini = $stmtBulanIni->fetch()['total'];
 
 // Mengambil total pendapatan bulan sebelumnya untuk perbandingan
 $stmtBulanKemarin = $conn->query("
-    SELECT IFNULL(SUM(l.harga_per_jam * r.jumlah_lapangan), 0) as total 
+    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan), 0) as total 
     FROM reservasi r 
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
     WHERE r.status = 'lunas' 
@@ -27,16 +27,32 @@ $stmtBulanKemarin = $conn->query("
 ");
 $pendapatan_bulan_kemarin = $stmtBulanKemarin->fetch()['total'];
 
+// Filter Tanggal
+$where = "r.status = 'lunas'";
+$params = [];
+
+if(!empty($_GET['tanggal_awal'])) {
+    $where .= " AND r.tanggal >= ?";
+    $params[] = $_GET['tanggal_awal'];
+}
+if(!empty($_GET['tanggal_akhir'])) {
+    $where .= " AND r.tanggal <= ?";
+    $params[] = $_GET['tanggal_akhir'];
+}
+
 // Mengambil detail riwayat transaksi lunas untuk ditampilkan di tabel
-$stmtTrans = $conn->query("
-    SELECT r.id_reservasi, p.nama, l.nama_lapangan, r.tanggal, r.jam_mulai, r.jam_selesai, r.jumlah_lapangan, l.harga_per_jam, (l.harga_per_jam * r.jumlah_lapangan) as total_bayar, r.waktu_booking
+$stmtTrans = $conn->prepare("
+    SELECT r.id_reservasi, p.nama, l.nama_lapangan, r.tanggal, r.jam_mulai, r.jam_selesai, r.jumlah_lapangan, l.harga_per_jam, (((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan) as total_bayar, r.waktu_booking
     FROM reservasi r
     JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan
-    WHERE r.status = 'lunas'
-    ORDER BY r.waktu_booking DESC
+    WHERE $where
+    ORDER BY r.tanggal DESC, r.jam_mulai DESC
 ");
+$stmtTrans->execute($params);
 $transaksi = $stmtTrans->fetchAll();
+
+$grand_total = 0;
 
 include 'header.php';
 ?>
@@ -69,10 +85,25 @@ include 'header.php';
     </div>
 </div>
 
+<form method="GET" action="laporan.php" class="row g-3 mb-4 d-print-none bg-white p-3 shadow-sm rounded border-0 mx-0">
+    <div class="col-md-4">
+        <label class="form-label fw-bold">Dari Tanggal</label>
+        <input type="date" name="tanggal_awal" class="form-control" value="<?= htmlspecialchars($_GET['tanggal_awal'] ?? '') ?>">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label fw-bold">Sampai Tanggal</label>
+        <input type="date" name="tanggal_akhir" class="form-control" value="<?= htmlspecialchars($_GET['tanggal_akhir'] ?? '') ?>">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-utama me-2 w-50"><i class="bi bi-filter"></i> Filter</button>
+        <a href="laporan.php" class="btn btn-outline-secondary w-50">Reset</a>
+    </div>
+</form>
+
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white fw-bold d-flex justify-content-between align-items-center">
         <span>Riwayat Transaksi (Status Lunas)</span>
-        <button class="btn btn-sm btn-outline-success" onclick="window.print()"><i class="bi bi-printer"></i> Cetak Laporan</button>
+        <button class="btn btn-sm btn-outline-success d-print-none" onclick="window.print()"><i class="bi bi-printer"></i> Cetak Laporan</button>
     </div>
     <div class="card-body p-0 table-responsive">
         <table class="table table-hover mb-0">
@@ -92,7 +123,9 @@ include 'header.php';
                 </tr>
                 <?php endif; ?>
                 
-                <?php foreach($transaksi as $row): ?>
+                <?php foreach($transaksi as $row): 
+                    $grand_total += $row['total_bayar'];
+                ?>
                 <tr>
                     <td><?= date('d M Y H:i', strtotime($row['waktu_booking'])) ?></td>
                     <td><strong><?= htmlspecialchars($row['nama']) ?></strong></td>
@@ -108,6 +141,12 @@ include 'header.php';
                 </tr>
                 <?php endforeach; ?>
             </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="4" class="text-end fw-bold align-middle fs-5">TOTAL KESELURUHAN</td>
+                    <td class="fw-bold text-success fs-4">Rp <?= number_format($grand_total, 0, ',', '.') ?></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
