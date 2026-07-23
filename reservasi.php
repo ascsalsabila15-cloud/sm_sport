@@ -272,11 +272,11 @@ include 'header.php';
                         <div class="row mb-4">
                             <div class="col">
                                 <label class="form-label text-muted">Jam Mulai</label>
-                                <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="23:00">
+                                <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="23:00" step="3600">
                             </div>
                             <div class="col">
                                 <label class="form-label text-muted">Jam Selesai</label>
-                                <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="23:00">
+                                <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="23:00" step="3600">
                             </div>
                         </div>
                         
