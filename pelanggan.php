@@ -7,6 +7,26 @@ if(!isset($_SESSION['id_pelanggan']) || $_SESSION['role'] != 'admin') {
     exit;
 }
 
+if(isset($_POST['action']) && $_POST['action'] == 'tambah') {
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+    $no_hp = $_POST['no_hp'];
+    $role = $_POST['role'];
+    $password = $_POST['password'];
+
+    $cek = $conn->prepare("SELECT email FROM pelanggan WHERE email = ?");
+    $cek->execute([$email]);
+    if($cek->rowCount() > 0) {
+        echo "<script>alert('Gagal! Email sudah digunakan oleh pengguna lain.'); window.location='pelanggan.php';</script>";
+        exit;
+    }
+
+    $stmt = $conn->prepare("INSERT INTO pelanggan (nama, email, no_hp, role, password) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$nama, $email, $no_hp, $role, $password]);
+    echo "<script>alert('Pengguna baru berhasil ditambahkan!'); window.location='pelanggan.php';</script>";
+    exit;
+}
+
 if(isset($_POST['action']) && $_POST['action'] == 'edit') {
     $id = $_POST['id_pelanggan'];
     $nama = $_POST['nama'];
@@ -52,6 +72,7 @@ include 'header.php';
 <div class="row mb-4">
     <div class="col-12 d-flex justify-content-between align-items-center">
         <h2 class="fw-bold"><i class="bi bi-people"></i> Kelola Pelanggan</h2>
+        <button class="btn btn-utama" data-bs-toggle="modal" data-bs-target="#tambahModal"><i class="bi bi-plus-circle"></i> Tambah Pelanggan</button>
     </div>
 </div>
 
@@ -114,7 +135,7 @@ include 'header.php';
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">No HP</label>
-                                        <input type="text" name="no_hp" class="form-control" required value="<?= htmlspecialchars($row['no_hp']) ?>">
+                                        <input type="tel" name="no_hp" class="form-control" required maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="<?= htmlspecialchars($row['no_hp']) ?>">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Role</label>
@@ -139,6 +160,50 @@ include 'header.php';
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Modal Tambah -->
+<div class="modal fade" id="tambahModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="pelanggan.php" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pelanggan Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="tambah">
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" name="nama" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">No HP</label>
+                        <input type="tel" name="no_hp" class="form-control" required maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select name="role" class="form-select" required>
+                            <option value="pelanggan">Pelanggan</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-utama">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

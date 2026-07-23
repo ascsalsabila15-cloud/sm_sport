@@ -2,6 +2,11 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Mencegah cache browser agar tidak memunculkan halaman lama saat pencet tombol Back setelah logout
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+header("Pragma: no-cache"); // HTTP 1.0.
+header("Expires: 0"); // Proxies.
 ?>
 <!DOCTYPE html>
 <html lang="id">
