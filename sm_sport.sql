@@ -1,8 +1,8 @@
--- Database schema for SM Sport Center
+-- Database SM Sport Center
 CREATE DATABASE IF NOT EXISTS sm_sport;
 USE sm_sport;
 
--- Table struktur untuk pelanggan
+-- Table untuk pelanggan
 CREATE TABLE IF NOT EXISTS `pelanggan` (
   `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(100) NOT NULL,
