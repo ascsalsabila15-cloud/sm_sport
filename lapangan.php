@@ -33,10 +33,21 @@ if(isset($_POST['action'])) {
 
 if(isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
-    $stmt = $conn->prepare("DELETE FROM lapangan WHERE id_lapangan=?");
-    $stmt->execute([$id]);
-    header("Location: lapangan.php");
-    exit;
+    try {
+        $stmt = $conn->prepare("DELETE FROM lapangan WHERE id_lapangan=?");
+        $stmt->execute([$id]);
+        header("Location: lapangan.php");
+        exit;
+    } catch (PDOException $e) {
+        // Cek apakah error karena constraint relasi (Code 23000)
+        if ($e->getCode() == '23000') {
+            echo "<script>alert('Gagal! Lapangan tidak bisa dihapus karena sudah memiliki riwayat pemesanan/reservasi.'); window.location='lapangan.php';</script>";
+            exit;
+        } else {
+            echo "<script>alert('Terjadi kesalahan database: " . $e->getMessage() . "'); window.location='lapangan.php';</script>";
+            exit;
+        }
+    }
 }
 
 // Mengambil seluruh data lapangan untuk ditampilkan

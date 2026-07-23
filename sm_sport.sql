@@ -23,17 +23,16 @@ INSERT INTO `pelanggan` (`id_pelanggan`, `nama`, `email`, `password`, `no_hp`, `
 -- Table struktur untuk lapangan
 CREATE TABLE IF NOT EXISTS `lapangan` (
   `id_lapangan` int(11) NOT NULL AUTO_INCREMENT,
-  `jenis` enum('Futsal','Badminton') NOT NULL,
   `nama_lapangan` varchar(100) NOT NULL,
-  `total_lapangan` int(11) NOT NULL,
-  `harga_per_jam` int(11) NOT NULL,
+  `jenis_lapangan` enum('Futsal','Badminton') NOT NULL,
+  `harga_per_jam` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id_lapangan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data lapangan sesuai kebutuhan (2 futsal, 3 badminton)
-INSERT INTO `lapangan` (`id_lapangan`, `jenis`, `nama_lapangan`, `total_lapangan`, `harga_per_jam`) VALUES
-(1, 'Futsal', 'Futsal (Sintetis)', 2, 100000),
-(2, 'Badminton', 'Badminton (Karpet)', 3, 50000);
+INSERT INTO `lapangan` (`id_lapangan`, `nama_lapangan`, `jenis_lapangan`, `harga_per_jam`) VALUES
+(1, 'Futsal (Sintetis)', 'Futsal', 100000.00),
+(2, 'Badminton (Karpet)', 'Badminton', 50000.00);
 
 
 -- Table struktur untuk reservasi
@@ -53,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `reservasi` (
   KEY `id_pelanggan` (`id_pelanggan`),
   KEY `id_lapangan` (`id_lapangan`),
   CONSTRAINT `fk_pelanggan` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_lapangan` FOREIGN KEY (`id_lapangan`) REFERENCES `lapangan` (`id_lapangan`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_lapangan` FOREIGN KEY (`id_lapangan`) REFERENCES `lapangan` (`id_lapangan`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dummy data reservasi

@@ -109,6 +109,7 @@ include 'header.php';
         <table class="table table-hover mb-0">
             <thead class="table-light">
                 <tr>
+                    <th>No</th>
                     <th>Waktu Pembayaran</th>
                     <th>Pelanggan</th>
                     <th>Lapangan</th>
@@ -119,14 +120,17 @@ include 'header.php';
             <tbody>
                 <?php if(count($transaksi) == 0): ?>
                 <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">Belum ada transaksi lunas</td>
+                    <td colspan="6" class="text-center py-4 text-muted">Belum ada transaksi lunas</td>
                 </tr>
                 <?php endif; ?>
                 
-                <?php foreach($transaksi as $row): 
+                <?php 
+                $no = 1;
+                foreach($transaksi as $row): 
                     $grand_total += $row['total_bayar'];
                 ?>
                 <tr>
+                    <td><?= $no++ ?></td>
                     <td><?= date('d M Y H:i', strtotime($row['waktu_booking'])) ?></td>
                     <td><strong><?= htmlspecialchars($row['nama']) ?></strong></td>
                     <td>
@@ -143,11 +147,18 @@ include 'header.php';
             </tbody>
             <tfoot class="table-light">
                 <tr>
-                    <td colspan="4" class="text-end fw-bold align-middle fs-5">TOTAL KESELURUHAN</td>
+                    <td colspan="5" class="text-end fw-bold align-middle fs-5">TOTAL KESELURUHAN</td>
                     <td class="fw-bold text-success fs-4">Rp <?= number_format($grand_total, 0, ',', '.') ?></td>
                 </tr>
             </tfoot>
         </table>
+    </div>
+</div>
+
+<div class="row mt-5 d-none d-print-block">
+    <div class="col-12 text-end pe-5" style="page-break-inside: avoid;">
+        <p class="mb-5">Depok, <?= date('d F Y') ?><br>Mengetahui,</p>
+        <p class="fw-bold mt-5 pt-4">Admin SM Sport</p>
     </div>
 </div>
 
