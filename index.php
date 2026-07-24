@@ -9,7 +9,7 @@
         <?php endif; ?>
     </div>
     <div class="col-md-5 d-none d-md-block text-center">
-        <img src="images/logo.png" alt="Hero Image" class="img-fluid" style="max-height: 300px;">
+        <img src="images/logo.png" alt="Hero Image" class="img-fluid" style="max-height: 300px;" width="400" height="300" fetchpriority="high">
     </div>
 </div>
 
@@ -59,7 +59,7 @@
     
     <div class="col-md-6 mb-4">
         <div class="card border-0 shadow-sm h-100">
-            <img src="images/futsal.png" class="card-img-top" alt="Futsal" style="height: 250px; object-fit: cover;">
+            <img src="images/futsal.png" class="card-img-top" alt="Futsal" style="height: 250px; object-fit: cover;" width="600" height="250" loading="lazy">
             <div class="card-body">
                 <h3 class="card-title text-utama fw-bold">Lapangan Futsal</h3>
                 <p class="card-text text-muted">Tersedia 2 lapangan futsal premium dengan rumput sintetis standar internasional. Cocok untuk pertandingan dan latihan rutin.</p>
@@ -69,7 +69,7 @@
     
     <div class="col-md-6 mb-4">
         <div class="card border-0 shadow-sm h-100">
-            <img src="images/badminton.png" class="card-img-top" alt="Badminton" style="height: 250px; object-fit: cover;">
+            <img src="images/badminton.png" class="card-img-top" alt="Badminton" style="height: 250px; object-fit: cover;" width="600" height="250" loading="lazy">
             <div class="card-body">
                 <h3 class="card-title text-utama fw-bold">Lapangan Badminton</h3>
                 <p class="card-text text-muted">Tersedia 3 lapangan badminton profesional dengan matras berkualitas. Dilengkapi dengan pencahayaan yang sangat baik.</p>
