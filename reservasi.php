@@ -34,7 +34,7 @@ if($_SESSION['role'] == 'admin') {
     $stmtRes = $conn->prepare("SELECT 
                                 GROUP_CONCAT(r.id_reservasi) as id_reservasi_group,
                                 l.jenis_lapangan as nama_lapangan, 
-                                SUM(r.jumlah_lapangan) as jumlah_lapangan,
+                                COUNT(r.id_lapangan) as jumlah_lapangan,
                                 r.tanggal, 
                                 r.jam_mulai, 
                                 r.jam_selesai, 
@@ -73,7 +73,7 @@ else {
     $stmtRes = $conn->prepare("SELECT 
                                 GROUP_CONCAT(r.id_reservasi) as id_reservasi_group,
                                 l.jenis_lapangan as nama_lapangan, 
-                                SUM(r.jumlah_lapangan) as jumlah_lapangan,
+                                COUNT(r.id_lapangan) as jumlah_lapangan,
                                 r.tanggal, 
                                 r.jam_mulai, 
                                 r.jam_selesai, 

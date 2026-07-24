@@ -59,7 +59,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'booking_awal') {
 
         for ($i = 0; $i < $jumlah_lapangan; $i++) {
             $id_lap = $available[$i];
-            $insert = $conn->prepare("INSERT INTO reservasi (id_pelanggan, id_lapangan, jumlah_lapangan, tanggal, jam_mulai, jam_selesai, metode_pembayaran, status) VALUES (?, ?, 1, ?, ?, ?, 'cash', 'pending')");
+            $insert = $conn->prepare("INSERT INTO reservasi (id_pelanggan, id_lapangan, tanggal, jam_mulai, jam_selesai, metode_pembayaran, status) VALUES (?, ?, ?, ?, ?, 'cash', 'pending')");
             $insert->execute([$id_pelanggan, $id_lap, $tanggal, $jam_mulai, $jam_selesai]);
             $inserted_ids[] = $conn->lastInsertId();
         }

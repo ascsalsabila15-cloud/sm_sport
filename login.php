@@ -16,11 +16,11 @@ if(isset($_POST['login'])) {
     $password = $_POST['password'];
 
     // Eksekusi query menggunakan Prepared Statement untuk mencegah SQL Injection
-    $stmt = $conn->prepare("SELECT * FROM pelanggan WHERE email = ? AND password = ?");
-    $stmt->execute([$email, $password]);
+    $stmt = $conn->prepare("SELECT * FROM pelanggan WHERE email = ?");
+    $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    if($user) {
+    if($user && password_verify($password, $user['password'])) {
         // Set session variables setelah autentikasi berhasil
         $_SESSION['id_pelanggan'] = $user['id_pelanggan'];
         $_SESSION['nama'] = $user['nama'];

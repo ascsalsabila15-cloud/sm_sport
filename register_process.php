@@ -18,8 +18,9 @@ if(isset($_POST['register'])) {
     }
 
     // Insert data pengguna baru menggunakan Prepared Statement
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $insert = $conn->prepare("INSERT INTO pelanggan (nama, email, no_hp, password, role) VALUES (?, ?, ?, ?, ?)");
-    if($insert->execute([$nama, $email, $no_hp, $password, $role])) {
+    if($insert->execute([$nama, $email, $no_hp, $hashed_password, $role])) {
         echo "<script>alert('Pendaftaran berhasil! Silakan login dengan akun barumu.'); window.location='login.php';</script>";
     } else {
         echo "<script>alert('Terjadi kesalahan, pendaftaran gagal!'); window.location='register.php';</script>";

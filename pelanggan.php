@@ -20,9 +20,10 @@ if(isset($_POST['action']) && $_POST['action'] == 'tambah') {
         echo "<script>alert('Gagal! Email sudah digunakan oleh pengguna lain.'); window.location='pelanggan.php';</script>";
         exit;
     }
-
+    
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO pelanggan (nama, email, no_hp, role, password) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$nama, $email, $no_hp, $role, $password]);
+    $stmt->execute([$nama, $email, $no_hp, $role, $hashed_password]);
     echo "<script>alert('Pengguna baru berhasil ditambahkan!'); window.location='pelanggan.php';</script>";
     exit;
 }
@@ -33,11 +34,12 @@ if(isset($_POST['action']) && $_POST['action'] == 'edit') {
     $email = $_POST['email'];
     $no_hp = $_POST['no_hp'];
     $role = $_POST['role'];
-    $password = $_POST['password'];
-
-    if(!empty($password)) {
+    
+    if(!empty($_POST['password'])) {
+        $password = $_POST['password'];
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE pelanggan SET nama=?, email=?, no_hp=?, role=?, password=? WHERE id_pelanggan=?");
-        $stmt->execute([$nama, $email, $no_hp, $role, $password, $id]);
+        $stmt->execute([$nama, $email, $no_hp, $role, $hashed_password, $id]);
     } else {
         $stmt = $conn->prepare("UPDATE pelanggan SET nama=?, email=?, no_hp=?, role=? WHERE id_pelanggan=?");
         $stmt->execute([$nama, $email, $no_hp, $role, $id]);

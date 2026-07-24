@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
 
 -- Dumping data dummy untuk pelanggan
 INSERT INTO `pelanggan` (`id_pelanggan`, `nama`, `email`, `password`, `no_hp`, `role`) VALUES
-(1, 'Administrator', 'admin@smsport.com', 'admin123', '08123456789', 'admin'),
-(2, 'Pelanggan Satu', 'pelanggan1@gmail.com', 'pelanggan123', '08987654321', 'pelanggan'),
-(3, 'Pelanggan Dua', 'pelanggan2@gmail.com', 'pelanggan123', '08111222333', 'pelanggan');
+(1, 'Admin', 'admin@smsport.com', '$2y$10$i5bcuIgWkWfJLQcze1y25eXT7TO9kn92XrqjFbmzT4ANYn7cNdIR6', '08123456789', 'admin'),
+(2, 'Pelanggan1', 'pelanggan1@gmail.com', '$2y$10$PAvg71Lo7JV7Dl2jTJ7vC.8BgIxGqAds4bOzM9iuAV9gx7ryOasQu', '08987654321', 'pelanggan'),
+(3, 'Pelanggan2', 'pelanggan2@gmail.com', '$2y$10$PAvg71Lo7JV7Dl2jTJ7vC.8BgIxGqAds4bOzM9iuAV9gx7ryOasQu', '08111222333', 'pelanggan');
 
 -- Table struktur untuk lapangan
 CREATE TABLE IF NOT EXISTS `lapangan` (
@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS `reservasi` (
   `id_reservasi` int(11) NOT NULL AUTO_INCREMENT,
   `id_pelanggan` int(11) NOT NULL,
   `id_lapangan` int(11) NOT NULL,
-  `jumlah_lapangan` int(11) NOT NULL DEFAULT 1,
   `tanggal` date NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL,
@@ -56,6 +55,6 @@ CREATE TABLE IF NOT EXISTS `reservasi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dummy data reservasi
-INSERT INTO `reservasi` (`id_reservasi`, `id_pelanggan`, `id_lapangan`, `jumlah_lapangan`, `tanggal`, `jam_mulai`, `jam_selesai`, `metode_pembayaran`, `bukti_transfer`, `status`) VALUES
-(1, 2, 1, 1, '2026-08-01', '15:00:00', '17:00:00', 'transfer', 'dummy_bukti.jpg', 'lunas'),
-(2, 3, 2, 2, '2026-08-01', '19:00:00', '21:00:00', 'cash', NULL, 'pending');
+INSERT INTO `reservasi` (`id_reservasi`, `id_pelanggan`, `id_lapangan`, `tanggal`, `jam_mulai`, `jam_selesai`, `metode_pembayaran`, `bukti_transfer`, `status`) VALUES
+(1, 2, 1, '2026-08-01', '15:00:00', '17:00:00', 'transfer', 'dummy_bukti.jpg', 'lunas'),
+(2, 3, 2, '2026-08-01', '19:00:00', '21:00:00', 'cash', NULL, 'pending');

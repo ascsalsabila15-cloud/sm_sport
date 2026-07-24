@@ -9,7 +9,7 @@ if(!isset($_SESSION['id_pelanggan']) || $_SESSION['role'] != 'admin') {
 
 // Mengambil total pendapatan bulan ini (hanya yang statusnya lunas)
 $stmtBulanIni = $conn->query("
-    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan), 0) as total 
+    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam), 0) as total 
     FROM reservasi r 
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
     WHERE r.status = 'lunas' 
@@ -19,7 +19,7 @@ $pendapatan_bulan_ini = $stmtBulanIni->fetch()['total'];
 
 // Mengambil total pendapatan bulan sebelumnya untuk perbandingan
 $stmtBulanKemarin = $conn->query("
-    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan), 0) as total 
+    SELECT IFNULL(SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam), 0) as total 
     FROM reservasi r 
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan 
     WHERE r.status = 'lunas' 
@@ -42,7 +42,7 @@ if(!empty($_GET['tanggal_akhir'])) {
 
 // Mengambil detail riwayat transaksi lunas untuk ditampilkan di tabel
 $stmtTrans = $conn->prepare("
-    SELECT r.id_reservasi, p.nama, l.nama_lapangan, r.tanggal, r.jam_mulai, r.jam_selesai, r.jumlah_lapangan, l.harga_per_jam, (((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam * r.jumlah_lapangan) as total_bayar, r.waktu_booking
+    SELECT r.id_reservasi, p.nama, l.nama_lapangan, r.tanggal, r.jam_mulai, r.jam_selesai, l.harga_per_jam, (((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam) as total_bayar, r.waktu_booking
     FROM reservasi r
     JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan
@@ -135,7 +135,7 @@ include 'header.php';
                     <td><strong><?= htmlspecialchars($row['nama']) ?></strong></td>
                     <td>
                         <?= htmlspecialchars($row['nama_lapangan']) ?><br>
-                        <small class="text-muted"><?= $row['jumlah_lapangan'] ?> Lapangan</small>
+                        <small class="text-muted">1 Lapangan</small>
                     </td>
                     <td>
                         <?= date('d M Y', strtotime($row['tanggal'])) ?><br>
