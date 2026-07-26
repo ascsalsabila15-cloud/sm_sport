@@ -81,9 +81,26 @@ if(isset($_POST['action']) && $_POST['action'] == 'bayar_invoice') {
     }
 
     if ($metode_pembayaran == 'transfer' && isset($_FILES['bukti_transfer']) && $_FILES['bukti_transfer']['error'] == 0) {
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf'];
+        $file_name = $_FILES['bukti_transfer']['name'];
+        $file_size = $_FILES['bukti_transfer']['size'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+        // Validasi Ekstensi File
+        if (!in_array($file_ext, $allowed_extensions)) {
+            echo "<script>alert('Gagal! Ekstensi file tidak diizinkan. Harap upload gambar (JPG/PNG) atau PDF.'); window.history.back();</script>";
+            exit;
+        }
+
+        // Validasi Ukuran File (Maksimal 2MB)
+        if ($file_size > 2097152) { // 2 * 1024 * 1024 bytes
+            echo "<script>alert('Gagal! Ukuran file terlalu besar. Maksimal 2MB.'); window.history.back();</script>";
+            exit;
+        }
+
         $upload_dir = 'uploads/';
         if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-        $filename = time() . '_' . basename($_FILES['bukti_transfer']['name']);
+        $filename = time() . '_' . basename($file_name);
         if (move_uploaded_file($_FILES['bukti_transfer']['tmp_name'], $upload_dir . $filename)) {
             $bukti_transfer = $filename;
         }
