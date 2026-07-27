@@ -91,7 +91,7 @@ include 'header.php';
                         <div class="alert alert-info py-2">
                             <small><i class="bi bi-info-circle"></i> Silakan transfer ke <strong>BCA 1234567890 a.n SM Sport Center</strong> sejumlah <strong>Rp <?= number_format($total_harga, 0, ',', '.') ?></strong>.</small>
                         </div>
-                        <label class="form-label text-muted">Unggah Bukti Transfer (Gambar)</label>
+                        <label class="form-label text-muted">Unggah Bukti Transfer (jpeg, jpg, png, dan sejenisnya)</label>
                         <input type="file" name="bukti_transfer" id="bukti_transfer_input" class="form-control" accept="image/*" <?= $reservasi['metode_pembayaran'] == 'transfer' ? 'required' : '' ?>>
                     </div>
 

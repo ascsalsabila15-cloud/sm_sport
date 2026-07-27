@@ -92,6 +92,14 @@ if(isset($_POST['action']) && $_POST['action'] == 'bayar_invoice') {
             exit;
         }
 
+        // Validasi MIME Type (Keamanan Ekstra Mencegah Shell Upload)
+        $allowed_mimes = ['image/jpeg', 'image/png', 'application/pdf'];
+        $file_mime = mime_content_type($_FILES['bukti_transfer']['tmp_name']);
+        if (!in_array($file_mime, $allowed_mimes)) {
+            echo "<script>alert('Gagal! File terdeteksi palsu atau mengandung script berbahaya. Harap upload gambar/PDF asli.'); window.history.back();</script>";
+            exit;
+        }
+
         // Validasi Ukuran File (Maksimal 2MB)
         if ($file_size > 2097152) { // 2 * 1024 * 1024 bytes
             echo "<script>alert('Gagal! Ukuran file terlalu besar. Maksimal 2MB.'); window.history.back();</script>";

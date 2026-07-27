@@ -167,7 +167,7 @@ include 'header.php';
                         $telat_30_menit = ($sekarang > ($waktu_main + 1800)); // 1800 detik = 30 menit
                     ?>
                     <tr>
-                        <td>#<?= $row['id_reservasi_group'] ?></td>
+                        <td>#<?= explode(',', $row['id_reservasi_group'])[0] ?></td>
                         <td>
                             <strong><?= htmlspecialchars($row['nama']) ?></strong><br>
                             <small class="text-muted"><i class="bi bi-whatsapp"></i> <?= htmlspecialchars($row['no_hp']) ?></small>
@@ -216,7 +216,7 @@ include 'header.php';
                             <?php elseif($row['status'] == 'batal'): 
                                 $wa_number = preg_replace('/[^0-9]/', '', $row['no_hp']);
                                 if(substr($wa_number, 0, 1) == '0') $wa_number = '62' . substr($wa_number, 1);
-                                $wa_msg = urlencode("Mohon maaf " . $row['nama'] . ", reservasi Anda di SM Sport Center untuk " . $row['nama_lapangan'] . " pada " . date('d M Y', strtotime($row['tanggal'])) . " jam " . substr($row['jam_mulai'],0,5) . " telah DIBATALKAN (karena telat / permintaan). Silakan lakukan reservasi ulang jika berkenan. Terima kasih.");
+                                $wa_msg = urlencode("Mohon maaf " . $row['nama'] . ", reservasi Anda di SM Sport Center untuk " . $row['nama_lapangan'] . " pada " . date('d M Y', strtotime($row['tanggal'])) . " jam " . substr($row['jam_mulai'],0,5) . " telah DIBATALKAN (karena telat). Silakan lakukan reservasi ulang jika berkenan. Terima kasih.");
                             ?>
                                 <a href="https://wa.me/<?= $wa_number ?>?text=<?= $wa_msg ?>" target="_blank" class="btn btn-sm btn-danger w-100"><i class="bi bi-whatsapp"></i> Konfirmasi Batal</a>
                             <?php endif; ?>
@@ -272,11 +272,11 @@ include 'header.php';
                         <div class="row mb-4">
                             <div class="col">
                                 <label class="form-label text-muted">Jam Mulai</label>
-                                <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="23:00" step="3600">
+                                <input type="time" name="jam_mulai" class="form-control" required min="06:00" max="23:00" step="3600" oninvalid="this.setCustomValidity('Jam harus antara 06:00 dan 23:00.')" oninput="this.setCustomValidity('')">
                             </div>
                             <div class="col">
                                 <label class="form-label text-muted">Jam Selesai</label>
-                                <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="23:00" step="3600">
+                                <input type="time" name="jam_selesai" class="form-control" required min="06:00" max="23:00" step="3600" oninvalid="this.setCustomValidity('Jam harus antara 06:00 dan 23:00.')" oninput="this.setCustomValidity('')">
                             </div>
                         </div>
                         

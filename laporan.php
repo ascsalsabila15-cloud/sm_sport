@@ -42,11 +42,25 @@ if(!empty($_GET['tanggal_akhir'])) {
 
 // Mengambil detail riwayat transaksi lunas untuk ditampilkan di tabel
 $stmtTrans = $conn->prepare("
-    SELECT r.id_reservasi, p.nama, l.nama_lapangan, r.tanggal, r.jam_mulai, r.jam_selesai, l.harga_per_jam, (((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam) as total_bayar, r.waktu_booking
+    SELECT 
+        p.nama, 
+        l.jenis_lapangan as nama_lapangan, 
+        COUNT(r.id_lapangan) as jumlah_lapangan,
+        r.tanggal, 
+        r.jam_mulai, 
+        r.jam_selesai, 
+        SUM(((TIME_TO_SEC(r.jam_selesai) - TIME_TO_SEC(r.jam_mulai))/3600) * l.harga_per_jam) as total_bayar, 
+        MAX(r.waktu_booking) as waktu_booking
     FROM reservasi r
     JOIN pelanggan p ON r.id_pelanggan = p.id_pelanggan
     JOIN lapangan l ON r.id_lapangan = l.id_lapangan
     WHERE $where
+    GROUP BY 
+        l.jenis_lapangan, 
+        r.tanggal, 
+        r.jam_mulai, 
+        r.jam_selesai, 
+        p.nama
     ORDER BY r.tanggal DESC, r.jam_mulai DESC
 ");
 $stmtTrans->execute($params);
@@ -135,7 +149,7 @@ include 'header.php';
                     <td><strong><?= htmlspecialchars($row['nama']) ?></strong></td>
                     <td>
                         <?= htmlspecialchars($row['nama_lapangan']) ?><br>
-                        <small class="text-muted">1 Lapangan</small>
+                        <small class="text-muted"><?= $row['jumlah_lapangan'] ?> Lapangan</small>
                     </td>
                     <td>
                         <?= date('d M Y', strtotime($row['tanggal'])) ?><br>
