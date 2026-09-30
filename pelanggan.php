@@ -29,7 +29,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'tambah') {
 }
 
 if(isset($_POST['action']) && $_POST['action'] == 'edit') {
-    $id = $_POST['id_pelanggan'];
+    $id = $_POST['id_'];
     $nama = $_POST['nama'];
     $email = $_POST['email'];
     $no_hp = $_POST['no_hp'];
